@@ -2,25 +2,49 @@
 title: "Clases 3 R"
 author: "EINSTEIN BC"
 format: html
+editor_options: 
+  chunk_output_type: console
 ---
 
-## Quarto
+#diseños experimentales
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+dosis (4) de fertilización nitrogenada:
 
-## Running Code
+-0
+-50
+-100
+-150
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+rep: 5
+
+
+## DCA EJEMPLO
+
+factor 1 (dosis nitrógeno): 0, 50, 100, 150
+factor 2 (variedades de papa): canchan y peruanita
+bloques: 5
 
 ```{r}
-1 + 1
+library(agricolae)
+
+dosis <- c(0, 50, 100, 150)
+variedad <- c("canchan", "peruanita")
+
+
+trt<-c(4,2) # factorial 4x2
+outdesign <-design.ab(trt, r=5)
+
+str(outdesign)
+
+book<-outdesign$book
+book # print of the field book
+
+
 ```
 
-You can add options to executable code like this 
 
-```{r}
-#| echo: false
-2 * 2
-```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## DBCA
+
+# annalisis de datos
+
