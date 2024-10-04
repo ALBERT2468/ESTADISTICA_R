@@ -43,8 +43,134 @@ book # print of the field book
 ```
 
 
-
 ## DBCA
 
 # annalisis de datos
+
+
+#EJEMPLO
+#importar datos
+```{r}
+
+library(readxl)
+LA_MOLINA_2014_POTATO_WUE_FB_ <- read_excel("LA MOLINA 2014 POTATO WUE (FB).xlsx", 
+    sheet = "fb")
+View(LA_MOLINA_2014_POTATO_WUE_FB_)
+
+
+```
+
+#análisis de datos
+
+```{r}
+library(tidyverse)
+library(googlesheets4)
+```
+
+
+
+
+```
+
+str(LA_MOLINA_2014_POTATO_WUE_FB_)
+~
+
+#modelo estad´siticos
+
+```{r}
+
+modelo <- aov(formula = lfa ~ riego + geno + riego*geno + bloque, data = LA_MOLINA_2014_POTATO_WUE_FB_)
+
+plot(modelo)
+
+anova(modelo)
+
+```
+
+# comparación de medias
+
+```{r}
+
+library(agricolae)
+
+mc <- agricolae::duncan.test(y = modelo, trt = c("riego", "geno"))
+
+
+mc
+
+#estructura de mc
+
+str(mc)
+
+#para corregir distribución de factores, es recomendable paquete "emmeans"
+
+
+
+```
+
+
+```{r}
+
+library(emmeans)
+library(multcomp)
+library(tidyverse)
+mc <- emmeans(modelo, ~ riego | geno) %>% cld(letters = letters, reversed = T)
+
+
+
+#grafico
+
+#gráfico de emmeans
+
+library(inti)
+
+plot_smr(data = mc)
+
+
+
+
+# Instalar y cargar la librería ggplot2 (si no la tienes instalada)
+# install.packages("ggplot2")
+library(ggplot2)
+
+# Crear un conjunto de datos de ejemplo
+data <- data.frame(
+  Categoria = c("A", "B", "C", "D"),
+  Valores = c(10, 15, 7, 12)
+)
+
+# Crear el gráfico de barras
+ggplot(mc, aes(x = geno, y = emmean, fill = riego)) +
+  geom_bar(stat = "identity") +  # 'stat = "identity"' para usar los valores reales
+  theme_minimal() +                                  # Aplicar un tema limpio
+  labs(title = "Gráfico de Barras",
+       x = "Categoría", 
+       y = "Valores")                                # Etiquetas de los ejes
+
+
+
+
+
+
+
+```{r}
+
+plot(mc)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
